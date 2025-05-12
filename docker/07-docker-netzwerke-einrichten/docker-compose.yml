@@ -1,0 +1,27 @@
+networks:
+  st-bridged-network:
+    driver: bridge
+
+services:
+  mathplot-1:
+    image: santiagotoro2023/m169-st-am-mathplot:latest
+    container_name: mathplot-1
+    ports:
+      - "8080:80"
+    networks:
+      - st-bridged-network
+    restart: unless-stopped
+
+  ubuntu-1:
+    image: ubuntu:latest
+    container_name: ubuntu-1
+    networks:
+      - st-bridged-network
+    command: ["/bin/bash", "-c", "apt update && apt upgrade -y && apt install -y iputils-ping && tail -f /dev/null"]
+    restart: unless-stopped
+
+  ubuntu-2:
+    image: ubuntu:latest
+    container_name: ubuntu-2
+    command: ["/bin/bash", "-c", "apt update && apt upgrade -y && apt install -y iputils-ping && tail -f /dev/null"]
+    restart: unless-stopped
